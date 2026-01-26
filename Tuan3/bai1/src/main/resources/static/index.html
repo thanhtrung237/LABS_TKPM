@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎯 Design Patterns Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .patterns {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            padding: 40px;
+        }
+        
+        .pattern-card {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 25px;
+            border: 2px solid #e9ecef;
+            transition: all 0.3s ease;
+        }
+        
+        .pattern-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+            border-color: #4facfe;
+        }
+        
+        .pattern-title {
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            color: #2c3e50;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .pattern-description {
+            color: #6c757d;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        
+        .test-section {
+            margin-bottom: 20px;
+        }
+        
+        .test-section h4 {
+            color: #495057;
+            margin-bottom: 10px;
+        }
+        
+        .input-group {
+            margin-bottom: 15px;
+        }
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #495057;
+            font-weight: 500;
+        }
+        
+        .input-group input, .input-group textarea, .input-group select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e9ecef;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
+        
+        .input-group input:focus, .input-group textarea:focus, .input-group select:focus {
+            outline: none;
+            border-color: #4facfe;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(79, 172, 254, 0.4);
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            color: #495057;
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, #56ab2f 0%, #a8e6cf 100%);
+            color: white;
+        }
+        
+        .result {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 6px;
+            padding: 15px;
+            margin-top: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            max-height: 300px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+        
+        .result.success {
+            border-color: #28a745;
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .result.error {
+            border-color: #dc3545;
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .subscribers-list {
+            background: #e3f2fd;
+            border: 2px solid #2196f3;
+            border-radius: 6px;
+            padding: 10px;
+            margin-top: 10px;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+        
+        .subscriber-item {
+            background: white;
+            padding: 8px;
+            margin: 5px 0;
+            border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+        }
+        
+        .remove-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 4px 8px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 10px;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            color: #6c757d;
+        }
+        
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #4facfe;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎯 Design Patterns Demo</h1>
+            <p>Test Composite, Observer, và Adapter Patterns với Email Notifications</p>
+        </div>
+        
+        <div class="patterns">
+            <!-- Composite Pattern -->
+            <div class="pattern-card">
+                <div class="pattern-title">
+                    🏗️ Composite Pattern
+                </div>
+                <div class="pattern-description">
+                    Quản lý hệ thống file và thư mục theo cấu trúc cây
+                </div>
+                
+                <div class="test-section">
+                    <h4>Tạo File System</h4>
+                    <button class="btn" onclick="createFileSystem()">Tạo File System Mẫu</button>
+                    <button class="btn btn-secondary" onclick="clearResult('composite-result')">Clear</button>
+                </div>
+                
+                <div class="test-section">
+                    <h4>Thêm File Mới</h4>
+                    <div class="input-group">
+                        <label>Tên file:</label>
+                        <input type="text" id="fileName" placeholder="example.txt" value="test.java">
+                    </div>
+                    <div class="input-group">
+                        <label>Nội dung:</label>
+                        <textarea id="fileContent" rows="3" placeholder="Nội dung file...">public class Test {
+    public static void main(String[] args) {
+        System.out.println("Hello World!");
+    }
+}</textarea>
+                    </div>
+                    <button class="btn" onclick="addFile()">Thêm File</button>
+                </div>
+                
+                <div class="result" id="composite-result"></div>
+            </div>
+            
+            <!-- Observer Pattern với Email Notifications -->
+            <div class="pattern-card">
+                <div class="pattern-title">
+                    👀 Observer Pattern + 📧 Email Notifications
+                </div>
+                <div class="pattern-description">
+                    Hệ thống thông báo qua email khi có thay đổi giá cổ phiếu hoặc trạng thái task
+                </div>
+                
+                <div class="test-section">
+                    <h4>📧 Quản Lý Email Subscribers</h4>
+                    <div class="input-group">
+                        <label>Email người nhận:</label>
+                        <input type="email" id="subscriberEmail" placeholder="user@example.com" value="alice@company.com">
+                    </div>
+                    <div class="input-group">
+                        <label>Tên người nhận:</label>
+                        <input type="text" id="subscriberName" placeholder="Tên người dùng" value="Alice Nguyen">
+                    </div>
+                    <button class="btn btn-success" onclick="addSubscriber()">➕ Thêm Subscriber</button>
+                    <button class="btn btn-secondary" onclick="viewSubscribers()">👥 Xem Danh Sách</button>
+                    
+                    <div id="subscribers-list" class="subscribers-list" style="display: none;">
+                        <h5>📋 Danh sách Subscribers:</h5>
+                        <div id="subscribers-content"></div>
+                    </div>
+                </div>
+                
+                <div class="test-section">
+                    <h4>📈 Tạo Cổ Phiếu</h4>
+                    <div class="input-group">
+                        <label>Mã cổ phiếu:</label>
+                        <input type="text" id="stockSymbol" placeholder="AAPL" value="AAPL">
+                    </div>
+                    <div class="input-group">
+                        <label>Giá ban đầu:</label>
+                        <input type="number" id="stockPrice" placeholder="100" value="150" step="0.01">
+                    </div>
+                    <button class="btn" onclick="createStock()">Tạo Cổ Phiếu</button>
+                </div>
+                
+                <div class="test-section">
+                    <h4>💰 Cập Nhật Giá (Gửi Email)</h4>
+                    <div class="input-group">
+                        <label>Giá mới:</label>
+                        <input type="number" id="newPrice" placeholder="120" value="175" step="0.01">
+                    </div>
+                    <button class="btn" onclick="updatePrice()">🔔 Cập Nhật & Gửi Email</button>
+                    <button class="btn btn-secondary" onclick="clearResult('observer-result')">Clear</button>
+                </div>
+                
+                <div class="test-section">
+                    <h4>📋 Cập Nhật Task Status</h4>
+                    <div class="input-group">
+                        <label>Task Name:</label>
+                        <input type="text" id="taskName" placeholder="Implement Login" value="Fix Bug #123">
+                    </div>
+                    <div class="input-group">
+                        <label>New Status:</label>
+                        <select id="taskStatus">
+                            <option value="In Progress">In Progress</option>
+                            <option value="Completed">Completed</option>
+                            <option value="Blocked">Blocked</option>
+                            <option value="Testing">Testing</option>
+                        </select>
+                    </div>
+                    <button class="btn" onclick="updateTaskStatus()">📧 Update Task & Notify</button>
+                </div>
+                
+                <div class="result" id="observer-result"></div>
+            </div>
+            
+            <!-- Adapter Pattern -->
+            <div class="pattern-card">
+                <div class="pattern-title">
+                    🔌 Adapter Pattern
+                </div>
+                <div class="pattern-description">
+                    Chuyển đổi dữ liệu giữa JSON và XML format
+                </div>
+                
+                <div class="test-section">
+                    <h4>Test JSON Data</h4>
+                    <div class="input-group">
+                        <label>JSON Data:</label>
+                        <textarea id="jsonData" rows="3">{"name":"John Doe","age":"30","city":"New York"}</textarea>
+                    </div>
+                    <button class="btn" onclick="processJSON()">Xử lý JSON</button>
+                </div>
+                
+                <div class="test-section">
+                    <h4>Test XML Data (Auto Convert)</h4>
+                    <div class="input-group">
+                        <label>XML Data:</label>
+                        <textarea id="xmlData" rows="3"><person><name>Jane Smith</name><age>25</age><city>Los Angeles</city></person></textarea>
+                    </div>
+                    <button class="btn" onclick="processXML()">Xử lý XML</button>
+                    <button class="btn btn-secondary" onclick="clearResult('adapter-result')">Clear</button>
+                </div>
+                
+                <div class="result" id="adapter-result"></div>
+            </div>
+        </div>
+        
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>Đang xử lý...</p>
+        </div>
+        
+        <div class="footer">
+            <p>🎓 Design Patterns Implementation - Observer Pattern với Email Notifications</p>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
