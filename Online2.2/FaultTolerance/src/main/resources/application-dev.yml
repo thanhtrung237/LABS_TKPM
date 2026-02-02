@@ -1,0 +1,64 @@
+server:
+  port: 8080
+
+# Service B configuration (simulated external service)
+service-b:
+  url: http://localhost:8080  # Same app for demo
+  timeout: 5000
+
+# More aggressive settings for testing
+resilience4j:
+  circuitbreaker:
+    instances:
+      serviceB:
+        register-health-indicator: true
+        sliding-window-size: 5
+        minimum-number-of-calls: 3
+        permitted-number-of-calls-in-half-open-state: 2
+        automatic-transition-from-open-to-half-open-enabled: true
+        wait-duration-in-open-state: 10s
+        failure-rate-threshold: 60
+        event-consumer-buffer-size: 10
+
+  retry:
+    instances:
+      serviceB:
+        max-attempts: 2
+        wait-duration: 500ms
+        enable-exponential-backoff: true
+        exponential-backoff-multiplier: 1.5
+
+  ratelimiter:
+    instances:
+      serviceB:
+        register-health-indicator: true
+        limit-for-period: 5
+        limit-refresh-period: 1s
+        timeout-duration: 2s
+
+  bulkhead:
+    instances:
+      serviceB:
+        max-concurrent-calls: 3
+        max-wait-duration: 1s
+
+  timelimiter:
+    instances:
+      serviceB:
+        timeout-duration: 2s
+        cancel-running-future: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+
+logging:
+  level:
+    io.github.resilience4j: DEBUG
+    iuh.fit.faulttolerance: DEBUG
+    org.springframework.web: DEBUG

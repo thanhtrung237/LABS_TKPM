@@ -1,0 +1,85 @@
+server:
+  port: 8080
+
+# Service B configuration (simulated external service)
+service-b:
+  url: http://localhost:8081
+  timeout: 5000
+
+# Resilience4J Configuration
+resilience4j:
+  # Circuit Breaker Configuration
+  circuitbreaker:
+    instances:
+      serviceB:
+        register-health-indicator: true
+        sliding-window-size: 10
+        minimum-number-of-calls: 5
+        permitted-number-of-calls-in-half-open-state: 3
+        automatic-transition-from-open-to-half-open-enabled: true
+        wait-duration-in-open-state: 5s
+        failure-rate-threshold: 50
+        event-consumer-buffer-size: 10
+        record-exceptions:
+          - org.springframework.web.client.HttpServerErrorException
+          - java.util.concurrent.TimeoutException
+          - java.io.IOException
+        ignore-exceptions:
+          - java.lang.IllegalArgumentException
+
+  # Retry Configuration
+  retry:
+    instances:
+      serviceB:
+        max-attempts: 3
+        wait-duration: 1s
+        enable-exponential-backoff: true
+        exponential-backoff-multiplier: 2
+        retry-exceptions:
+          - org.springframework.web.client.ResourceAccessException
+          - java.util.concurrent.TimeoutException
+        ignore-exceptions:
+          - java.lang.IllegalArgumentException
+
+  # Rate Limiter Configuration
+  ratelimiter:
+    instances:
+      serviceB:
+        register-health-indicator: true
+        limit-for-period: 10
+        limit-refresh-period: 1s
+        timeout-duration: 3s
+
+  # Bulkhead Configuration
+  bulkhead:
+    instances:
+      serviceB:
+        max-concurrent-calls: 5
+        max-wait-duration: 2s
+
+  # Time Limiter Configuration
+  timelimiter:
+    instances:
+      serviceB:
+        timeout-duration: 3s
+        cancel-running-future: true
+
+# Management endpoints for monitoring
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,circuitbreakers,ratelimiters,bulkheads,retries
+  endpoint:
+    health:
+      show-details: always
+  health:
+    circuitbreakers:
+      enabled: true
+    ratelimiters:
+      enabled: true
+
+logging:
+  level:
+    io.github.resilience4j: DEBUG
+    iuh.fit.faulttolerance: DEBUG
