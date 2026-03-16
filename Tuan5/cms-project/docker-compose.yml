@@ -1,0 +1,42 @@
+version: "3.8"
+
+services:
+  # ── Backend (Node + Express + Plugins) ──────────────────
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=production
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3001/api/posts"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  # ── Frontend (React + Vite) ──────────────────────────────
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+
+  # ── Database (tuỳ chọn, dùng khi cần lưu thật) ──────────
+  # db:
+  #   image: postgres:15-alpine
+  #   environment:
+  #     POSTGRES_DB: cms_db
+  #     POSTGRES_USER: admin
+  #     POSTGRES_PASSWORD: secret
+  #   ports:
+  #     - "5432:5432"
+  #   volumes:
+  #     - pgdata:/var/lib/postgresql/data
+
+# volumes:
+#   pgdata:
