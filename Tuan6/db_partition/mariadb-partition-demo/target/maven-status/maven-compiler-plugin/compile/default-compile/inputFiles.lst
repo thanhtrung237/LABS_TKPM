@@ -1,0 +1,11 @@
+T:\LABS_TKPM\Tuan6\db_partition\mariadb-partition-demo\src\main\java\com\demo\entity\UserId.java
+T:\LABS_TKPM\Tuan6\db_partition\mariadb-partition-demo\src\main\java\com\demo\entity\User.java
+T:\LABS_TKPM\Tuan6\db_partition\mariadb-partition-demo\src\main\java\com\demo\entity\Order.java
+T:\LABS_TKPM\Tuan6\db_partition\mariadb-partition-demo\src\main\java\com\demo\entity\UserProfileDetail.java
+T:\LABS_TKPM\Tuan6\db_partition\mariadb-partition-demo\src\main\java\com\demo\PartitionDemoApplication.java
+T:\LABS_TKPM\Tuan6\db_partition\mariadb-partition-demo\src\main\java\com\demo\entity\UserProfile.java
+T:\LABS_TKPM\Tuan6\db_partition\mariadb-partition-demo\src\main\java\com\demo\repository\OrderRepository.java
+T:\LABS_TKPM\Tuan6\db_partition\mariadb-partition-demo\src\main\java\com\demo\entity\OrderId.java
+T:\LABS_TKPM\Tuan6\db_partition\mariadb-partition-demo\src\main\java\com\demo\repository\UserProfileRepository.java
+T:\LABS_TKPM\Tuan6\db_partition\mariadb-partition-demo\src\main\java\com\demo\repository\UserRepository.java
+T:\LABS_TKPM\Tuan6\db_partition\mariadb-partition-demo\src\main\java\com\demo\controller\PartitionDemoController.java

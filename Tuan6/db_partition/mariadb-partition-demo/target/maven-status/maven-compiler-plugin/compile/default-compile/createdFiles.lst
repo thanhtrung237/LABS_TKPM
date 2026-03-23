@@ -1,0 +1,11 @@
+com\demo\entity\OrderId.class
+com\demo\entity\UserId.class
+com\demo\entity\User.class
+com\demo\entity\UserProfileDetail.class
+com\demo\repository\UserProfileRepository.class
+com\demo\PartitionDemoApplication.class
+com\demo\entity\Order.class
+com\demo\controller\PartitionDemoController.class
+com\demo\repository\OrderRepository.class
+com\demo\repository\UserRepository.class
+com\demo\entity\UserProfile.class
